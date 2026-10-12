@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block title %}Detail Mahasiswa{% endblock %}
+{% block content %}
+<section class="page-heading">
+    <div>
+        <p class="eyebrow">INFORMASI AKADEMIK</p>
+        <h1>Detail Mahasiswa</h1>
+        <p class="muted">Informasi lengkap mahasiswa yang dipilih.</p>
+    </div>
+    <div class="heading-actions">
+        <a class="button secondary" href="{{ url_for('index') }}">Kembali</a>
+        <a class="button primary" href="{{ url_for('edit_mahasiswa', nim=mahasiswa.nim) }}">Edit Data</a>
+    </div>
+</section>
+<section class="panel detail-panel">
+    <div class="profile-mark">{{ mahasiswa.nama[:1]|upper }}</div>
+    <h2>{{ mahasiswa.nama }}</h2>
+    <p class="muted">{{ mahasiswa.program_studi }}</p>
+    <div class="detail-grid">
+        <div class="detail-item"><span>NIM</span><strong>{{ mahasiswa.nim }}</strong></div>
+        <div class="detail-item"><span>Program Studi</span><strong>{{ mahasiswa.program_studi }}</strong></div>
+        <div class="detail-item"><span>Angkatan</span><strong>{{ mahasiswa.angkatan }}</strong></div>
+        <div class="detail-item"><span>IPK</span><strong>{{ "%.2f"|format(mahasiswa.ipk) }}</strong></div>
+        <div class="detail-item"><span>Lama Studi</span><strong>{{ mahasiswa.lama_studi }} tahun</strong></div>
+    </div>
+    <form class="delete-detail" action="{{ url_for('hapus_mahasiswa', nim=mahasiswa.nim) }}" method="post" onsubmit="return confirm('Yakin ingin menghapus data mahasiswa ini?');">
+        <button class="button danger" type="submit">Hapus Mahasiswa</button>
+    </form>
+</section>
+{% endblock %}

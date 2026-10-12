@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% block title %}Daftar Mahasiswa{% endblock %}
+{% block content %}
+<section class="page-heading">
+    <div>
+        <p class="eyebrow">PENGELOLAAN AKADEMIK</p>
+        <h1>Data Mahasiswa</h1>
+        <p class="muted">Kelola informasi mahasiswa dalam satu tempat.</p>
+    </div>
+    <a class="button primary" href="{{ url_for('tambah_mahasiswa') }}">+ Tambah Mahasiswa</a>
+</section>
+
+<section class="panel">
+    <div class="panel-heading">
+        <div>
+            <h2>Daftar mahasiswa</h2>
+            <p class="muted">Total {{ mahasiswa|length }} mahasiswa terdaftar</p>
+        </div>
+    </div>
+    {% if mahasiswa %}
+    <div class="table-scroll">
+        <table>
+            <thead>
+                <tr><th>NIM</th><th>Nama</th><th>Program Studi</th><th>Angkatan</th><th>IPK</th><th>Lama Studi</th><th>Aksi</th></tr>
+            </thead>
+            <tbody>
+            {% for m in mahasiswa %}
+                <tr>
+                    <td class="nim">{{ m.nim }}</td>
+                    <td>{{ m.nama }}</td>
+                    <td>{{ m.program_studi }}</td>
+                    <td>{{ m.angkatan }}</td>
+                    <td>{{ "%.2f"|format(m.ipk) }}</td>
+                    <td>{{ m.lama_studi }} tahun</td>
+                    <td class="actions">
+                        <a class="small-button" href="{{ url_for('detail_mahasiswa', nim=m.nim) }}">Detail</a>
+                        <a class="small-button edit" href="{{ url_for('edit_mahasiswa', nim=m.nim) }}">Edit</a>
+                        <form class="inline-form" action="{{ url_for('hapus_mahasiswa', nim=m.nim) }}" method="post" onsubmit="return confirm('Yakin ingin menghapus data mahasiswa ini?');">
+                            <button class="small-button delete" type="submit">Hapus</button>
+                        </form>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    <div class="empty-state">
+        <div class="empty-icon">▤</div>
+        <h3>Belum ada data mahasiswa</h3>
+        <p>Tambahkan data pertama melalui tombol di atas.</p>
+        <a class="button primary" href="{{ url_for('tambah_mahasiswa') }}">Tambah Mahasiswa</a>
+    </div>
+    {% endif %}
+</section>
+{% endblock %}

@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% if mode == "tambah" %}
+    {% set heading = "Tambah Mahasiswa" %}
+    {% set action_url = url_for('tambah_mahasiswa') %}
+{% else %}
+    {% set heading = "Edit Data Mahasiswa" %}
+    {% set action_url = url_for('edit_mahasiswa', nim=nim_asal) %}
+{% endif %}
+{% block title %}{{ heading }}{% endblock %}
+{% block content %}
+<section class="page-heading">
+    <div>
+        <p class="eyebrow">FORMULIR MAHASISWA</p>
+        <h1>{{ heading }}</h1>
+        <p class="muted">Isi informasi dengan benar. Semua kolom wajib diisi.</p>
+    </div>
+</section>
+<section class="panel form-panel">
+    <form method="post" action="{{ action_url }}">
+        <div class="form-grid">
+            <div class="field">
+                <label for="nim">NIM</label>
+                <input id="nim" name="nim" type="number" min="1" step="1" required value="{{ data.get('nim', '') }}" placeholder="Contoh: 12345678">
+                <small>NIM harus unik dan berupa bilangan bulat.</small>
+            </div>
+            <div class="field">
+                <label for="nama">Nama lengkap</label>
+                <input id="nama" name="nama" type="text" required maxlength="120" value="{{ data.get('nama', '') }}" placeholder="Masukkan nama mahasiswa">
+            </div>
+            <div class="field">
+                <label for="program_studi">Program studi</label>
+                <input id="program_studi" name="program_studi" type="text" required maxlength="120" value="{{ data.get('program_studi', '') }}" placeholder="Contoh: Bisnis Digital">
+            </div>
+            <div class="field">
+                <label for="angkatan">Angkatan</label>
+                <input id="angkatan" name="angkatan" type="number" min="1900" max="{{ tahun_sekarang if tahun_sekarang is defined else 2100 }}" step="1" required value="{{ data.get('angkatan', '') }}" placeholder="Contoh: 2023">
+            </div>
+            <div class="field">
+                <label for="ipk">IPK</label>
+                <input id="ipk" name="ipk" type="number" min="0" max="4" step="0.01" required value="{{ data.get('ipk', '') }}" placeholder="0.00 - 4.00">
+                <small>Rentang IPK yang diterima adalah 0,00 sampai 4,00.</small>
+            </div>
+        </div>
+        <div class="form-actions">
+            <a class="button secondary" href="{{ url_for('index') }}">Batal</a>
+            <button class="button primary" type="submit">Simpan Data</button>
+        </div>
+    </form>
+</section>
+{% endblock %}
